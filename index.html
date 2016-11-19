@@ -233,7 +233,9 @@
                 cstatus.fadeIn();
                 cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
                 var ageInterests = determineAgeBasedInterests();
-				getPoliticalParty();
+				getPoliticalParty().done(function(party) {
+					politics = party;
+				});
                 setTimeout(function() {
                     cstatus.fadeOut();
                     cstatus.html('You live in ' + response.location.name + '. Hmm, interesting!');
@@ -268,9 +270,11 @@
         }
 
         function getPoliticalParty() {
+			var dfd = $.Deferred();
             FB.api('/me?fields=political', function(response) {
-				politics = response.political.slice(0, -3);
+				dfd.resolve( response.political.slice(0, -3));
             });
+			return dfd.promise();
         }
     </script>
 
