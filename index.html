@@ -40,7 +40,7 @@
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      testAPI();
+      startAnalysis();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -100,12 +100,17 @@
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+  function startAnalysis() {
+    console.log('Logged in');
     FB.api('/me', function(response) {
+	  var status = document.getElementById('status');
       console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+      status.innerHTML =
+        'Hi ' + response.name + '! Please wait, we\'re getting some insights...';
+	  status.fadeOut();
+	  status.innerHTML = 'You live in ' + response.location + '. Hmm, interesting!';
+	  status.fadeIn();
+	  document.getElementById("userdata-exp").fadeIn();
     });
   }
 </script>
@@ -151,7 +156,7 @@
                         <span class="name">What's your government doing for you?</span>
                         <hr class="star-light">
 						
-						<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+						<fb:login-button scope="public_profile,user_location" onlogin="checkLoginState();">
 						</fb:login-button>
 
 						<div id="status">
@@ -164,7 +169,7 @@
     </header>
 
     <!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center hide" id="userdata-exp">
         <div class="footer-above">
             <div class="container">
                 <div class="row">
