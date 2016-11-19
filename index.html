@@ -221,15 +221,15 @@
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function startAnalysis() {
-    var status = $('#status');
+    var cstatus = $('#status');
     console.log('Logged in');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-      status.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
+      cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
 	  setTimeout(function(){
-		  status.fadeOut();
-		  status.html('You live in ' + response.location + '. Hmm, interesting!');
-		  status.fadeIn();
+		  cstatus.fadeOut();
+		  cstatus.html('You live in ' + response.location + '. Hmm, interesting!');
+		  cstatus.fadeIn();
 		  $( "#userdata-exp").fadeIn();
 	  }, 2000);	  
     });
