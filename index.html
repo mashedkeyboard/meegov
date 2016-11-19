@@ -73,8 +73,6 @@
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.8' // use graph api version 2.8
   });
-  
-  FB.logout(function(response){});
 
   // Now that we've initialized the JavaScript SDK, we call 
   // FB.getLoginStatus().  This function gets the state of the
@@ -88,9 +86,9 @@
   //
   // These three cases are handled in the callback function.
 
-  FB.getLoginStatus(function(response) {
+  /* FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
-  });
+  }); */
 
   };
 
