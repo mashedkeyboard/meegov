@@ -101,18 +101,23 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
+  function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function startAnalysis() {
+  async function startAnalysis() {
     console.log('Logged in');
     FB.api('/me', function(response) {
-	  var status = $( '#status');
+	  var status = $('#status');
       console.log('Successful login for: ' + response.name);
-      status.innerHTML =
-        'Hi ' + response.name + '! Please wait, we\'re getting some insights...';
+      status.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
+	  await sleep(2000);
 	  status.fadeOut();
-	  status.innerHTML = 'You live in ' + response.location + '. Hmm, interesting!';
+	  status.html('You live in ' + response.location + '. Hmm, interesting!');
 	  status.fadeIn();
+	  await sleep(2000);
 	  $( "#userdata-exp").fadeIn();
     });
   }
@@ -162,7 +167,7 @@
 						<fb:login-button scope="public_profile,user_location" onlogin="checkLoginState();">
 						</fb:login-button>
 
-						<div id="status">
+						<div id="status" class="hide">
 						</div>
 
                     </div>
