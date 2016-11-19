@@ -273,8 +273,8 @@
             FB.api('/me?fields=political', function(response) {
                 var politics = response.political;
                 politics = politics.slice(0, -3);
-                return politics;
             });
+			return politics
         }
     </script>
 
