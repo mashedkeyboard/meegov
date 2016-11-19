@@ -222,11 +222,11 @@
 
         // Here we run a very simple test of the Graph API after login is
         // successful.  See statusChangeCallback() for when this call is made.
-        function startAnalysis() {
-			$("#fblogin").fadeOut();
+        function startAnalysis() {			
             console.log('Logged in');
             FB.api('/me?fields=location,name', function(response) {
                 console.log('Successful login for: ' + response.name);
+				$("#fblogin").fadeOut();
                 cstatus.fadeIn();
                 cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
                 var ageInterests = determineAgeBasedInterests();
