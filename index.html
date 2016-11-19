@@ -226,13 +226,13 @@
   // successful.  See statusChangeCallback() for when this call is made.
   function startAnalysis() {
     console.log('Logged in');
-    FB.api('/me', function(response) {
+    FB.api('/me?fields=location,name', function(response) {
       console.log('Successful login for: ' + response.name);
 	  cstatus.fadeIn();
       cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
 	  setTimeout(function(){
 		  cstatus.fadeOut();
-		  cstatus.html('You live in ' + response.location + '. Hmm, interesting!');
+		  cstatus.html('You live in ' + response.location.name + '. Hmm, interesting!');
 		  cstatus.fadeIn();
 		  userexp.fadeIn();
 	  }, 2000);	  
