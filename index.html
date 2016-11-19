@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 	
-	    <!-- jQuery -->
+	<!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -108,14 +108,14 @@
   function startAnalysis() {
     console.log('Logged in');
     FB.api('/me', function(response) {
-	  var status = document.getElementById('status');
+	  var status = $( '#status');
       console.log('Successful login for: ' + response.name);
       status.innerHTML =
         'Hi ' + response.name + '! Please wait, we\'re getting some insights...';
 	  status.fadeOut();
 	  status.innerHTML = 'You live in ' + response.location + '. Hmm, interesting!';
 	  status.fadeIn();
-	  document.getElementById("userdata-exp").fadeIn();
+	  $( "#userdata-exp").fadeIn();
     });
   }
 </script>
