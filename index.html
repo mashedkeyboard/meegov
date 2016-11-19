@@ -32,6 +32,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+	<style>rotate{display:inline-block;-webkit-animation-name:rotate;-webkit-animation-duration:2s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;-moz-animation-name:rotate;-moz-animation-duration:2s;-moz-animation-iteration-count:infinite;-moz-animation-timing-function:linear;-o-animation-name:rotate;-o-animation-duration:2s;-o-animation-iteration-count:infinite;-o-animation-timing-function:linear;animation-name:rotate;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:linear}@-webkit-keyframes rotate{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@-o-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
 </head>
 
 <body id="page-top" class="index">
@@ -68,7 +69,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img class="img-responsive" src="img/hoc.png" alt="">
+                    <img class="img-responsive" id="commons-loader" src="img/hoc.png" alt="">
                     <div class="intro-text">
                         <span class="name">What's your government doing for you?</span>
                         <hr class="star-light">
@@ -149,6 +150,7 @@
     <script>
         var cstatus = $('#status');
         var userexp = $("#userdata-exp");
+		var cload = $("#commons-loader");
         cstatus.hide();
         userexp.hide();
         // This is called with the results from from FB.getLoginStatus().
@@ -224,8 +226,10 @@
         // successful.  See statusChangeCallback() for when this call is made.
         function startAnalysis() {			
             console.log('Logged in');
+			cload.addClass("rotate");
             FB.api('/me?fields=location,name', function(response) {
                 console.log('Successful login for: ' + response.name);
+				$(".name").fadeOut();
                 cstatus.fadeIn();
                 cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
                 var ageInterests = determineAgeBasedInterests();
@@ -241,6 +245,7 @@
                         setTimeout(function() {
 							cstatus.html("Enjoy!");
                             userexp.fadeIn();
+							cload.removeClass("rotate");
 							$('html, body').animate({
 								scrollTop: userexp.offset().top
 							}, 1000);
