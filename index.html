@@ -239,7 +239,7 @@
                         cstatus.html('We think you support ' + politics + '. Looks good!');
                         cstatus.fadeIn();
                         setTimeout(function() {
-							cstatus.fadeOut();
+							cstatus.html("Enjoy!");
                             userexp.fadeIn();
 							$('html, body').animate({
 								scrollTop: userexp.offset().top
@@ -264,7 +264,7 @@
 
         function getPoliticalParty() {
             FB.api('/me?fields=political', function(response) {
-                var poltics = response.political;
+                var politics = response.political;
                 politics = politics.slice(0, -3);
                 return politics;
             });
