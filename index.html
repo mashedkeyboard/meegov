@@ -76,7 +76,7 @@
 						<fb:login-button scope="public_profile,user_location" onlogin="checkLoginState();">
 						</fb:login-button>
 
-						<div id="status" class="hide">
+						<div id="status">
 						</div>
 
                     </div>
@@ -86,7 +86,7 @@
     </header>
 
     <!-- Footer -->
-    <footer class="text-center hide" id="userdata-exp">
+    <footer class="text-center" id="userdata-exp">
         <div class="footer-above">
             <div class="container">
                 <div class="row">
@@ -150,6 +150,10 @@
     <script src="js/freelancer.min.js"></script>
 	
 	<script>
+	var cstatus = $('#status');
+	var userexp = $( "#userdata-exp");
+	cstatus.hide();
+	userexp.hide();
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -221,16 +225,16 @@
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function startAnalysis() {
-    var cstatus = $('#status');
     console.log('Logged in');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
+	  cstatus.fadeIn();
       cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
 	  setTimeout(function(){
 		  cstatus.fadeOut();
 		  cstatus.html('You live in ' + response.location + '. Hmm, interesting!');
 		  cstatus.fadeIn();
-		  $( "#userdata-exp").fadeIn();
+		  userexp.fadeIn();
 	  }, 2000);	  
     });
   }
