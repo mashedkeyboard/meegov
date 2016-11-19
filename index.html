@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-	
-	<!-- jQuery -->
+
+    <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -72,12 +72,12 @@
                     <div class="intro-text">
                         <span class="name">What's your government doing for you?</span>
                         <hr class="star-light">
-						
-						<fb:login-button scope="public_profile,user_location" onlogin="checkLoginState();">
-						</fb:login-button>
 
-						<div id="status">
-						</div>
+                        <fb:login-button scope="public_profile,user_location" onlogin="checkLoginState();">
+                        </fb:login-button>
+
+                        <div id="status">
+                        </div>
 
                     </div>
                 </div>
@@ -90,32 +90,31 @@
         <div class="footer-above">
             <div class="container">
                 <div class="row">
-                    <div class="footer-col col-md-4">
+                    <div class="footer-col col-md-4" id="localData">
                         <h3>Local</h3>
-                        <p>3481 Melrose Place
-                            <br>Beverly Hills, CA 90210</p>
                     </div>
-                    <div class="footer-col col-md-4">
+                    <div class="footer-col col-md-4" id="nationalData">
                         <h3>National</h3>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>Actions</h3>
                         <p>Don't like something on here? Write to your representatives.</p>
-						<div>
-						   <form style="text-align:center" action="https://www.writetothem.com/" target="_blank" method="get">
-							   <div>
-								   <div style="margin-bottom:0.25em;"><h3>Enter your postcode.</h3>
-								</div>
-								<div class="input-group">
-										   <input name="pc" class="form-control" type="text" size="13">
-								<span class="input-group-btn">
+                        <div>
+                            <form style="text-align:center" action="https://www.writetothem.com/" target="_blank" method="get">
+                                <div>
+                                    <div style="margin-bottom:0.25em;">
+                                        <h3>Enter your postcode.</h3>
+                                    </div>
+                                    <div class="input-group">
+                                        <input name="pc" class="form-control" type="text" size="13">
+                                        <span class="input-group-btn">
 										   <input class="btn btn-success" type="submit" value="Go">
 								</span>
-								</div>
-									   </div>
-								   </form>
-						<small>Powered by <a href="https://writetothem.com/">WriteToThem</a></small>
-						</div>
+                                    </div>
+                                </div>
+                            </form>
+                            <small>Powered by <a href="https://writetothem.com/">WriteToThem</a></small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,97 +145,130 @@
 
     <!-- Theme JavaScript -->
     <script src="js/freelancer.min.js"></script>
-	
-	<script>
-	var cstatus = $('#status');
-	var userexp = $( "#userdata-exp");
-	cstatus.hide();
-	userexp.hide();
-  // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
-    if (response.status === 'connected') {
-      // Logged into your app and Facebook.
-      startAnalysis();
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
-    }
-  }
 
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-  }
+    <script>
+        var cstatus = $('#status');
+        var userexp = $("#userdata-exp");
+        cstatus.hide();
+        userexp.hide();
+        // This is called with the results from from FB.getLoginStatus().
+        function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                startAnalysis();
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not your app.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
+            } else {
+                // The person is not logged into Facebook, so we're not sure if
+                // they are logged into this app or not.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into Facebook.';
+            }
+        }
 
-  window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '1165068333580206',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.8' // use graph api version 2.8
-  });
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
 
-  // Now that we've initialized the JavaScript SDK, we call 
-  // FB.getLoginStatus().  This function gets the state of the
-  // person visiting this page and can return one of three states to
-  // the callback you provide.  They can be:
-  //
-  // 1. Logged into your app ('connected')
-  // 2. Logged into Facebook, but not your app ('not_authorized')
-  // 3. Not logged into Facebook and can't tell if they are logged into
-  //    your app or not.
-  //
-  // These three cases are handled in the callback function.
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1165068333580206',
+                cookie: true, // enable cookies to allow the server to access 
+                // the session
+                xfbml: true, // parse social plugins on this page
+                version: 'v2.8' // use graph api version 2.8
+            });
 
-  /* FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  }); */
+            // Now that we've initialized the JavaScript SDK, we call 
+            // FB.getLoginStatus().  This function gets the state of the
+            // person visiting this page and can return one of three states to
+            // the callback you provide.  They can be:
+            //
+            // 1. Logged into your app ('connected')
+            // 2. Logged into Facebook, but not your app ('not_authorized')
+            // 3. Not logged into Facebook and can't tell if they are logged into
+            //    your app or not.
+            //
+            // These three cases are handled in the callback function.
 
-  };
+            /* FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+            }); */
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+        };
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function startAnalysis() {
-    console.log('Logged in');
-    FB.api('/me?fields=location,name', function(response) {
-      console.log('Successful login for: ' + response.name);
-	  cstatus.fadeIn();
-      cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
-	  setTimeout(function(){
-		  cstatus.fadeOut();
-		  cstatus.html('You live in ' + response.location.name + '. Hmm, interesting!');
-		  cstatus.fadeIn();
-		  userexp.fadeIn();
-	  }, 2000);	  
-    });
-  }
-</script>
+        // Load the SDK asynchronously
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // Here we run a very simple test of the Graph API after login is
+        // successful.  See statusChangeCallback() for when this call is made.
+        function startAnalysis() {
+            console.log('Logged in');
+            FB.api('/me?fields=location,name', function(response) {
+                console.log('Successful login for: ' + response.name);
+                cstatus.fadeIn();
+                cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
+                var ageInterests = determineAgeBasedInterests();
+                var politics = getPoliticalParty();
+                setTimeout(function() {
+                    cstatus.fadeOut();
+                    cstatus.html('You live in ' + response.location.name + '. Hmm, interesting!');
+                    cstatus.fadeIn();
+                    setTimeout(function() {
+                        cstatus.fadeOut();
+                        cstatus.html('We think you support ' + politics + '. Looks good!');
+                        cstatus.fadeIn();
+                        setTimeout(function() {
+                            userexp.fadeIn();
+                        }, 2000);
+
+                    }, 2000);
+                }, 2000);
+            });
+        }
+
+        function determineAgeBasedInterests() {
+            FB.api('/me?fields=age_range', function(response) {
+                if (response.min < 25) {
+                    return "Education";
+                } else if (response.min < 55) {
+                    return "Job creation";
+                } else {
+                    return "Pensions";
+                }
+            });
+        }
+
+        function getPoliticalParty() {
+            FB.api('/me?fields=political', function(response) {
+                var poltics = response.political;
+                politics = politics.slice(0, -3);
+                return politics;
+            });
+        }
+
+        }
+    </script>
 
 </body>
 
