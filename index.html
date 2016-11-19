@@ -145,6 +145,7 @@
     <script src="js/freelancer.min.js"></script>
 
     <script>
+		var politics;
         var cstatus = $('#status');
         var userexp = $("#userdata-exp");
 		var cload = $("#commons-loader");
@@ -232,7 +233,7 @@
                 cstatus.fadeIn();
                 cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
                 var ageInterests = determineAgeBasedInterests();
-                var politics = getPoliticalParty();
+				getPoliticalParty();
                 setTimeout(function() {
                     cstatus.fadeOut();
                     cstatus.html('You live in ' + response.location.name + '. Hmm, interesting!');
@@ -267,10 +268,8 @@
         }
 
         function getPoliticalParty() {
-            return FB.api('/me?fields=political', function(response) {
-                var politics;
+            FB.api('/me?fields=political', function(response) {
 				politics = response.political.slice(0, -3);
-				return politics;
             });
         }
     </script>
