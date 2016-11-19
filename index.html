@@ -150,6 +150,9 @@
     <script src="js/freelancer.min.js"></script>
 	
 	<script>
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	  };
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -217,10 +220,6 @@
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-
-  function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-  };
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
