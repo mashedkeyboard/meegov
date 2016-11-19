@@ -150,9 +150,6 @@
     <script src="js/freelancer.min.js"></script>
 	
 	<script>
-	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	  };
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -223,18 +220,18 @@
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  async function startAnalysis() {
+  function startAnalysis() {
     var status = $('#status');
     console.log('Logged in');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       status.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
-	  await sleep(2000);
-	  status.fadeOut();
-	  status.html('You live in ' + response.location + '. Hmm, interesting!');
-	  status.fadeIn();
-	  await sleep(2000);
-	  $( "#userdata-exp").fadeIn();
+	  setTimeout(function(){
+		  status.fadeOut();
+		  status.html('You live in ' + response.location + '. Hmm, interesting!');
+		  status.fadeIn();
+		  $( "#userdata-exp").fadeIn();
+	  }, 2000);	  
     });
   }
 </script>
