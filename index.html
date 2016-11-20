@@ -32,7 +32,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-	<style>.rotate{display:inline-block;-webkit-animation-name:rotate;-webkit-animation-duration:2s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;-moz-animation-name:rotate;-moz-animation-duration:2s;-moz-animation-iteration-count:infinite;-moz-animation-timing-function:linear;-o-animation-name:rotate;-o-animation-duration:2s;-o-animation-iteration-count:infinite;-o-animation-timing-function:linear;animation-name:rotate;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:linear}@-webkit-keyframes rotate{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@-o-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+	<style>.rotate{display:inline-block;-webkit-animation-name:rotate;-webkit-animation-duration:2s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:linear;-moz-animation-name:rotate;-moz-animation-duration:2s;-moz-animation-iteration-count:infinite;-moz-animation-timing-function:linear;-o-animation-name:rotate;-o-animation-duration:2s;-o-animation-iteration-count:infinite;-o-animation-timing-function:linear;animation-name:rotate;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:linear}@-webkit-keyframes rotate{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@-o-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}.square{width:50vw;height:50vw}</style>
 </head>
 
 <body id="page-top" class="index">
@@ -90,9 +90,19 @@
                 <div class="row">
                     <div class="footer-col col-md-4" id="localData">
                         <h3>Local</h3>
+						<h4>Based on your age, we think your priorities are</h4>
+						<h5 id="agePriority1"></h5>
+						<p>Your local council spent <strong id="apDataNugget1"></strong> of it's budget last year on <span id="agePriority1nc"></span>.</p>
+						<h4>Based on post analysis, we think your priorities are</h4>
+						<h5 id="postPriority1"></h5>
+						<p>Your local council spent <strong id="ppDataNugget1"></strong> of it's budget last year on <span id="postPriority1nc"></span>.</p>
                     </div>
                     <div class="footer-col col-md-4" id="nationalData">
                         <h3>National</h3>
+						<h4>Based on your political affiliation, we thought you'd be interested in this</h4>
+						<h5 id="partyName"></h5><span class="partyColour" id="partyCBox"></span>
+						House of Commons: <i class="fa" aria-hidden="true" id="partyHoC"></i>
+						House of Lords: <i class="fa" aria-hidden="true" id="partyHoL"></i>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>Actions</h3>
@@ -145,6 +155,18 @@
     <script src="js/freelancer.min.js"></script>
 
     <script>
+		
+		String.prototype.fuzzy = function(term, ratio) {
+			var string = this.toLowerCase();
+			var compare = term.toLowerCase();
+			var matches = 0;
+			if (string.indexOf(compare) > -1) return true; // covers basic partial matches
+			for (var i = 0; i < compare.length; i++) {
+				string.indexOf(compare[i]) > -1 ? matches += 1 : matches -=1;
+			}
+			return (matches/this.length >= ratio || term == "")
+		};
+		
 		var politics;
         var cstatus = $('#status');
         var userexp = $("#userdata-exp");
@@ -232,9 +254,42 @@
 				$(".name").fadeOut();
                 cstatus.fadeIn();
                 cstatus.html('Hi ' + response.name + '! Please wait, we\'re getting some insights...');
-                var ageInterests = determineAgeBasedInterests();
 				getPoliticalParty().done(function(party) {
 					politics = party;
+					politicalPartyAnalysis(politics).done(function(result) {
+						$("#partyName").html(result[0]);
+						function HoCset(isHOC) {
+							var HOCval = $("#partyHoC");
+							if (isHOC) {
+								HOCval.addClass("fa-check");
+							} else {
+								HOCval.addClass("fa-times");
+							}
+						}
+						function HoLset(isHOL) {
+							var HOLval = $("#partyHoL");
+							if (isHOL) {
+								HOLval.addClass("fa-check");
+							} else {
+								HOLval.addClass("fa-times");
+							}
+						}
+						if (result[1] == "False" && result[2] == "False") {
+							HoCset(false);
+							HoLset(false);
+						} else if (result[1] == "True" && result[2] == "True") {
+							HoCset(true);
+							HoLset(true);
+						} else if (result[1] == "False" && result[2] == "True" {
+							HoCset(false);
+							HoLset(true);
+						} else {
+							HoCset(true);
+							HoLset(false);
+						}
+						
+						$("#partyCBox").style.backgroundColor = result[3];
+					});
 				});
                 setTimeout(function() {
                     cstatus.fadeOut();
@@ -246,6 +301,7 @@
                         cstatus.fadeIn();
                         setTimeout(function() {
 							cstatus.html("Enjoy!");
+							determineAgeBasedInterests();
                             userexp.fadeIn();
 							cload.removeClass("rotate");
 							$('html, body').animate({
@@ -258,14 +314,21 @@
         }
 
         function determineAgeBasedInterests() {
+			var agePriority1 = $("#agePriority1");
+			var agePriority1DN = $("#apDataNugget1");
+			var agePriority1NC = $("#agePriority1nc");
             FB.api('/me?fields=age_range', function(response) {
                 if (response.min < 25) {
-                    return "Education";
+					agePriority1.html("Education");
+					agePriority1NC.html("education");
                 } else if (response.min < 55) {
-                    return "Job creation";
+                    agePriority1.html("Job creation");					
+					agePriority1NC.html("job creation");
                 } else {
-                    return "Pensions";
+                    agePriority1.html("Pensions");					
+					agePriority1NC.html("pensions");
                 }
+				agePriority1DN.html("110%");
             });
         }
 
@@ -276,6 +339,18 @@
             });
 			return dfd.promise();
         }
+		
+		function politicalPartyAnalysis(party) {
+			var dfd = $.Deferred();
+			$.getJSON( "http://data.parliament.uk/membersdataplatform/services/mnis/ReferenceData/Parties/", function( data ) {
+				$.each(data.Parties.Party, function(i, v) {
+					if (v.Name.fuzzy(party,0.2)) {
+						dfd.resolve([v.Name,v.IsCommons,v.IsLords,v.Colour);
+					}
+				});
+			});
+			return dfd.promise();
+		}
     </script>
 
 </body>
