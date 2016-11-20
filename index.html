@@ -345,7 +345,7 @@
 			$.getJSON( "http://data.parliament.uk/membersdataplatform/services/mnis/ReferenceData/Parties/", function( data ) {
 				$.each(data.Parties.Party, function(i, v) {
 					if (v.Name.fuzzy(party,0.2)) {
-						dfd.resolve([v.Name,v.IsCommons,v.IsLords,v.Colour);
+						dfd.resolve([v.Name,v.IsCommons,v.IsLords,v.Colour]);
 					}
 				});
 			});
