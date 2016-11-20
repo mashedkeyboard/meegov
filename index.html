@@ -94,8 +94,8 @@
 						<h5 id="agePriority1"></h5>
 						<p>Your local council spent <strong id="apDataNugget1"></strong> of it's budget last year on <span id="agePriority1nc"></span>.</p>
 						<h4>Based on post analysis, we think your priorities are</h4>
-						<h5 id="postPriority1"></h5>
-						<p>Your local council spent <strong id="ppDataNugget1"></strong> of it's budget last year on <span id="postPriority1nc"></span>.</p>
+						<h5 id="postPriority1">Internet privacy</h5>
+						<p>Legislation was passed <strong id="ppDataNugget1"></strong> that restricted this recently. <a>Learn more</a> <span id="postPriority1nc"></span>.</p>
                     </div>
                     <div class="footer-col col-md-4" id="nationalData">
                         <h3>National</h3>
@@ -153,20 +153,10 @@
 
     <!-- Theme JavaScript -->
     <script src="js/freelancer.min.js"></script>
+	
+	<script src="js/fuzzyset.js"></script>
 
-    <script>
-		
-		String.prototype.fuzzy = function(term, ratio) {
-			var string = this.toLowerCase();
-			var compare = term.toLowerCase();
-			var matches = 0;
-			if (string.indexOf(compare) > -1) return true; // covers basic partial matches
-			for (var i = 0; i < compare.length; i++) {
-				string.indexOf(compare[i]) > -1 ? matches += 1 : matches -=1;
-			}
-			return (matches/this.length >= ratio || term == "")
-		};
-		
+    <script>		
 		var politics;
         var cstatus = $('#status');
         var userexp = $("#userdata-exp");
@@ -344,8 +334,13 @@
 		function politicalPartyAnalysis(party) {
 			var dfd = $.Deferred();
 			$.getJSON( "js/members.json", function( data ) {
+				var a = FuzzySet();
 				$.each(data.Parties.Party, function(i, v) {
-					if (v.Name.fuzzy(party,0.2)) {
+						a.add(v.Name)
+				});
+				var matched = a.get(party)[0][1];
+				$.each(data.Parties.party, function(i, v) {
+					if (v.Name == matched) {
 						dfd.resolve([v.Name,v.IsCommons,v.IsLords,v.Colour]);
 					}
 				});
