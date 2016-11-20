@@ -318,10 +318,11 @@
 			var agePriority1DN = $("#apDataNugget1");
 			var agePriority1NC = $("#agePriority1nc");
             FB.api('/me?fields=age_range', function(response) {
-                if (response.min < 25) {
+				var minage = response.age_range.min;
+                if (minage < 25) {
 					agePriority1.html("Education");
 					agePriority1NC.html("education");
-                } else if (response.min < 55) {
+                } else if (minage < 55) {
                     agePriority1.html("Job creation");					
 					agePriority1NC.html("job creation");
                 } else {
@@ -342,7 +343,7 @@
 		
 		function politicalPartyAnalysis(party) {
 			var dfd = $.Deferred();
-			$.getJSON( "http://data.parliament.uk/membersdataplatform/services/mnis/ReferenceData/Parties/", function( data ) {
+			$.getJSON( "js/members.json", function( data ) {
 				$.each(data.Parties.Party, function(i, v) {
 					if (v.Name.fuzzy(party,0.2)) {
 						dfd.resolve([v.Name,v.IsCommons,v.IsLords,v.Colour]);
